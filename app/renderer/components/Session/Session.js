@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
-import AttachToSession from './AttachToSession';
+// import AttachToSession from './AttachToSession';
 import ServerTabAutomatic from './ServerTabAutomatic';
 import ServerTabCustom from './ServerTabCustom';
 import { Tabs, Button, Spin, Icon } from 'antd';
-import AdvancedServerParams from './AdvancedServerParams';
+// import AdvancedServerParams from './AdvancedServerParams';
 import SessionStyles from './Session.css';
 import CloudProviders from './CloudProviders';
 import CloudProviderSelector from './CloudProviderSelector';
@@ -73,11 +73,12 @@ export default class Session extends Component {
                   return <TabPane key={providerName} tab={<div>{provider.tabhead()}</div>}>
                     {provider.tab(this.props)}
                   </TabPane>;
-                }),
-                <TabPane tab={<span className='addCloudProviderTab'>{ t('Select Cloud Providers') }</span>} key={ADD_CLOUD_PROVIDER}></TabPane>
+                })
+                //   ,
+                // <TabPane tab={<span className='addCloudProviderTab'>{ t('Select Cloud Providers') }</span>} key={ADD_CLOUD_PROVIDER}></TabPane>
               ]}
             </Tabs>
-            <AdvancedServerParams {...this.props} />
+            {/*<AdvancedServerParams {...this.props} />*/}
           </div>
 
 
@@ -92,9 +93,9 @@ export default class Session extends Component {
             <TabPane tab={t('Saved Capability Sets', {savedSessionsCount: savedSessions.length})} key='saved' className={SessionStyles.scrollingTab} disabled={savedSessions.length === 0}>
               <SavedSessions {...this.props} />
             </TabPane>
-            <TabPane tab={t('Attach to Session')} key='attach' className={SessionStyles.scrollingTab}>
-              <AttachToSession {...this.props} />
-            </TabPane>
+            {/*<TabPane tab={t('Attach to Session')} key='attach' className={SessionStyles.scrollingTab}>*/}
+            {/*<AttachToSession {...this.props} />*/}
+            {/*</TabPane>*/}
           </Tabs>}
           <div className={SessionStyles.sessionFooter}>
             <div className={SessionStyles.desiredCapsLink}>

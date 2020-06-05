@@ -189,10 +189,7 @@ menuTemplates.mac = async () => [
 
 function otherMenuFile () {
   let fileSubmenu = [{
-    label: i18n.t('&Open'),
-    accelerator: 'Ctrl+O'
-  }, {
-    label: i18n.t('&About Appium'),
+    label: i18n.t('About Appium'),
     click () {
       dialog.showMessageBox({
         title: i18n.t('Appium Desktop'),
@@ -202,13 +199,13 @@ function otherMenuFile () {
   }, {
     type: 'separator'
   }, {
-    label: i18n.t('&New Session Window...'),
+    label: i18n.t('New Session Window…'),
     accelerator: 'Ctrl+N',
     click () {
       createNewSessionWindow(mainWindow);
     }
   }, {
-    label: i18n.t('&Close'),
+    label: i18n.t('Close'),
     accelerator: 'Ctrl+W',
     click () {
       mainWindow.close();
@@ -217,29 +214,29 @@ function otherMenuFile () {
 
   // If it's Windows, add a 'Check for Updates' menu option
   if (process.platform === 'win32') {
-    fileSubmenu.splice(1, 0, {
-      label: i18n.t('&Check for updates'),
-      click () {
-        checkNewUpdates(true);
-      }
-    });
+    // fileSubmenu.splice(1, 0, {
+    //   label: i18n.t('Check for updates'),
+    //   click () {
+    //     checkNewUpdates(true);
+    //   }
+    // });
   }
 
   return {
-    label: i18n.t('&File'),
+    label: i18n.t('File'),
     submenu: fileSubmenu,
   };
 }
 
 function otherMenuView () {
   const submenu = [];
-  submenu.push([{
-    label: i18n.t('Toggle &Full Screen'),
+  submenu.push({
+    label: i18n.t('Toggle Full Screen'),
     accelerator: 'F11',
     click () {
       mainWindow.setFullScreen(!mainWindow.isFullScreen());
     }
-  }]);
+  });
 
   submenu.push({
     label: i18n.t('Languages'),
@@ -248,14 +245,14 @@ function otherMenuView () {
 
   if (process.env.NODE_ENV === 'development') {
     submenu.push({
-      label: i18n.t('&Reload'),
+      label: i18n.t('Reload'),
       accelerator: 'Ctrl+R',
       click () {
         mainWindow.webContents.reload();
       }
     });
     submenu.push({
-      label: i18n.t('Toggle &Developer Tools'),
+      label: i18n.t('Toggle Developer Tools'),
       accelerator: 'Alt+Ctrl+I',
       click () {
         mainWindow.toggleDevTools();
@@ -264,7 +261,7 @@ function otherMenuView () {
   }
 
   return {
-    label: i18n.t('&View'),
+    label: i18n.t('View'),
     submenu,
   };
 }

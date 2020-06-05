@@ -1,11 +1,13 @@
 import { clipboard } from 'electron';
 import React, { Component } from 'react';
+import _ from 'lodash';
 import ReactDOM from 'react-dom';
-import { Card, Select, Tooltip, Button, Icon } from 'antd';
+import { Input, Card, Select, Tooltip, Modal, Button, Icon, Row, Col } from 'antd';
 import InspectorStyles from './Inspector.css';
 import frameworks from '../../lib/client-frameworks';
 import { highlight } from 'highlight.js';
 import { withTranslation } from '../../util';
+// import index from "../../actions/index";
 
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
@@ -33,12 +35,24 @@ class RecordedActions extends Component {
       recordedActions,
       setActionFramework,
       toggleShowBoilerplate,
+      showSaveCaseModal,
+      hideSaveCaseModal,
       clearRecording,
       closeRecorder,
       actionFramework,
       isRecording,
+      isShowSaveModal,
       t,
     } = this.props;
+
+    const saveCaseValue = [
+      ['projectName', 'string'],
+      ['peojectDes', 'string'],
+      ['className', 'string'],
+      ['classDes', 'string'],
+      ['methodName', 'string'],
+      ['methodDes', 'string']
+    ];
 
     let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
       {frameworks[f].readableName}
@@ -55,6 +69,13 @@ class RecordedActions extends Component {
       }
       {(!!recordedActions.length || !isRecording) &&
         <ButtonGroup size="small">
+          {!!recordedActions.length &&
+          <Tooltip title={t('save test case')}>
+            <Button
+              onClick={showSaveCaseModal} icon="save"
+            />
+          </Tooltip>
+          }
           {!!recordedActions.length &&
           <Tooltip title={t('Show/Hide Boilerplate Code')}>
             <Button onClick={toggleShowBoilerplate} icon="export"
@@ -80,6 +101,23 @@ class RecordedActions extends Component {
           </Tooltip>
           }
         </ButtonGroup>
+      }
+      {!!recordedActions.length &&
+        <Modal
+          title={t('save test case')}
+          visible={isShowSaveModal}
+          onOk={() => showSaveCaseModal()}
+          onCancel={() => hideSaveCaseModal()}
+          okText={t('Execute')}
+          cancelText={t('Quit')}
+        >
+          {_.map(saveCaseValue,
+            ([argName, argType], index) => <Row key={index} gutter={16}>
+              <Col span={24} className={InspectorStyles['arg-container']}>
+                {argType === 'string' && <Input addonBefore={t(argName)}/>}
+              </Col>
+            </Row>)}
+        </Modal>
       }
     </div>;
   }

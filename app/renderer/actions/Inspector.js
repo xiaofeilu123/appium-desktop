@@ -67,6 +67,9 @@ export const ENTERING_ACTION_ARGS = 'ENTERING_ACTION_ARGS';
 export const REMOVE_ACTION = 'REMOVE_ACTION';
 export const SET_ACTION_ARG = 'SET_ACTION_ARG';
 
+export const SHOW_SAVE_MODAL = 'SHOW_SAVE_MODAL';
+export const HIDE_SAVE_MODAL = 'HIDE_SAVE_MODAL';
+
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -380,6 +383,18 @@ export function setLocatorTestValue (locatorTestValue) {
 export function setLocatorTestStrategy (locatorTestStrategy) {
   return (dispatch) => {
     dispatch({type: SET_LOCATOR_TEST_STRATEGY, locatorTestStrategy});
+  };
+}
+
+export function showSaveCaseModal () {
+  return (dispatch) => {
+    dispatch({type: SHOW_SAVE_MODAL});
+  };
+}
+
+export function hideSaveCaseModal () {
+  return (dispatch) => {
+    dispatch({type: HIDE_SAVE_MODAL});
   };
 }
 

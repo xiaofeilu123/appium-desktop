@@ -143,10 +143,11 @@ export default class AppiumMethodHandler {
     }
 
     // Give the source/screenshot time to change before taking the screenshot
-    await Bluebird.delay(500);
+    await Bluebird.delay(1);
 
     let sourceAndScreenshot;
     if (!skipScreenshotAndSource) {
+      await Bluebird.delay(500);
       sourceAndScreenshot = await this._getSourceAndScreenshot();
     }
 
