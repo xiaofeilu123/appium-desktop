@@ -62,17 +62,10 @@ const { STRING, NUMBER } = actionArgTypes;
 
 // Note: When adding or removing actionDefinitions, update `en/translation.json`
 export const actionDefinitions = {
-  'Basic': {
-    'Class': {
-      'Create Class': {methodName: 'createClass', args: [['className', STRING], ['classDes', STRING]], isOnlyAdd: true},
-      'Edit Class': {methodName: 'editClass', args: [['className', STRING], ['classDes', STRING]], isOnlyAdd: true},
-    },
-    'Method': {
-      'Create Method': {methodName: 'createMethod', args: [['methodName', STRING], ['methodDes', STRING]], isOnlyAdd: true},
-      'Edit Method': {methodName: 'editMethod', args: [['methodName', STRING], ['methodDes', STRING]], isOnlyAdd: true},
-    },
-  },
   'Device': {
+    'Execute Mobile': {
+      'Execute': {methodName: 'execute', args: [['command', STRING], ['jsonArgument', STRING]]}
+    },
     'Android Activity': {
       'Start Activity': {methodName: 'startActivity', args: [
         ['appPackage', STRING], ['appActivity', STRING], ['appWaitPackage', STRING],
@@ -92,6 +85,10 @@ export const actionDefinitions = {
       'Remove App': {methodName: 'removeAppFromDevice', args: [['bundleId', STRING]]},
       'Get App Strings': {methodName: 'getAppStrings', args: [['language', STRING], ['stringFile', STRING]], refresh: true},
     },
+    'Clipboard': {
+      'Get Clipboard': {methodName: 'getClipboard'},
+      'Set Clipboard': {methodName: 'setClipboard', args: [['clipboardText', STRING]]},
+    },
     'File': {
       'Push File': {methodName: 'pushFileToDevice', args: [['pathToInstallTo', STRING], ['fileContentString', STRING]]},
       'Pull File': {methodName: 'pullFile', args: [['pathToPullFrom', STRING]]},
@@ -107,8 +104,8 @@ export const actionDefinitions = {
       ], refresh: true},
     },
     'Keys': {
-      'Press Key': {methodName: 'pressKeycode', args: [['keyCode', NUMBER]], refresh: true},
-      'Long Press Key': {methodName: 'longPressKeycode', args: [['keyCode', NUMBER]], refresh: true},
+      'Press Key': {methodName: 'pressKeycode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]], refresh: true},
+      'Long Press Key': {methodName: 'longPressKeycode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]], refresh: true},
       'Hide Keyboard': {methodName: 'hideDeviceKeyboard', refresh: true},
       'Is Keyboard Shown': {methodName: 'isKeyboardShown'},
     },
@@ -125,6 +122,10 @@ export const actionDefinitions = {
     'Performance Data': {
       'Get Data': {methodName: 'getPerformanceData', args: [['packageName', STRING], ['dataType', STRING], ['dataReadTimeout', NUMBER]]},
       'Get Data Types': {methodName: 'getSupportedPerformanceDataTypes'},
+    },
+    'iOS Simulator': {
+      'Perform Touch Id': {methodName: 'performTouchId', args: [['match', STRING]], refresh: true},
+      'Toggle Touch Id Enrollment': {methodName: 'toggleTouchIdEnrollment', args: [['enroll', STRING]]},
     },
     'System': {
       'Open Notifications': {methodName: 'openNotifications', refresh: true},
@@ -148,6 +149,14 @@ export const actionDefinitions = {
     'Geolocation': {
       'Get Geolocation': {methodName: 'getGeoLocation'},
       'Set Geolocation': {methodName: 'setGeoLocation', args: [['latitude', NUMBER], ['longitude', NUMBER], ['altitude', NUMBER]]},
+    },
+    'Logs': {
+      'Get Log Types': {methodName: 'logTypes'},
+      'Get Logs': {methodName: 'log', args: [['logType', STRING]]},
+    },
+    'Settings': {
+      'Update Settings': {methodName: 'updateSettings', args: [['settingsJson', STRING]]},
+      'Get Device Settings': {methodName: 'settings'},
     },
   },
 };

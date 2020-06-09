@@ -2,14 +2,14 @@ import { clipboard } from 'electron';
 import React, { Component } from 'react';
 import _ from 'lodash';
 import ReactDOM from 'react-dom';
-import { Input, Card, Select, Tooltip, Modal, Button, Icon, Row, Col } from 'antd';
+import { Input, Card, Tooltip, Modal, Button, Icon, Row, Col } from 'antd';
 import InspectorStyles from './Inspector.css';
 import frameworks from '../../lib/client-frameworks';
 import { highlight } from 'highlight.js';
 import { withTranslation } from '../../util';
 // import index from "../../actions/index";
 
-const Option = Select.Option;
+// const Option = Select.Option;
 const ButtonGroup = Button.Group;
 
 class RecordedActions extends Component {
@@ -33,13 +33,14 @@ class RecordedActions extends Component {
     const {
       showBoilerplate,
       recordedActions,
-      setActionFramework,
+      // setActionFramework,
       toggleShowBoilerplate,
       showSaveCaseModal,
       hideSaveCaseModal,
       clearRecording,
+      popAction,
       closeRecorder,
-      actionFramework,
+      // actionFramework,
       isRecording,
       isShowSaveModal,
       t,
@@ -54,19 +55,19 @@ class RecordedActions extends Component {
       ['methodDes', 'string']
     ];
 
-    let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
-      {frameworks[f].readableName}
-    </Option>);
+    // let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
+    //   {frameworks[f].readableName}
+    // </Option>);
 
     let boilerplateType = showBoilerplate ? 'primary' : 'default';
 
     return <div>
-      {!!recordedActions.length &&
-        <Select defaultValue={actionFramework} onChange={setActionFramework}
-          className={InspectorStyles['framework-dropdown']} size="small">
-          {frameworkOpts}
-        </Select>
-      }
+      {/*{!!recordedActions.length &&*/}
+      {/*<Select defaultValue={actionFramework} onChange={setActionFramework}*/}
+      {/*className={InspectorStyles['framework-dropdown']} size="small">*/}
+      {/*{frameworkOpts}*/}
+      {/*</Select>*/}
+      {/*}*/}
       {(!!recordedActions.length || !isRecording) &&
         <ButtonGroup size="small">
           {!!recordedActions.length &&
@@ -88,6 +89,11 @@ class RecordedActions extends Component {
             <Button icon="copy"
               onClick={() => clipboard.writeText(this.code())}
             />
+          </Tooltip>
+          }
+          {!!recordedActions.length &&
+          <Tooltip title={t('Back Actions')}>
+            <Button icon="arrow-left" onClick={() => popAction(recordedActions)}/>
           </Tooltip>
           }
           {!!recordedActions.length &&

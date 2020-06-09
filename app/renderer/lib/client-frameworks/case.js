@@ -14,22 +14,29 @@ class CaseFramework extends Framework {
   }
 
   wrapWithBoilerplate (code) {
-    let capStr = Object.keys(this.caps).map((k) => {
-      return `caps[${JSON.stringify(k)}] = ${this.getCaseVal(this.caps[k])}`;
+    let desStr = Object.keys(this.desAction).map((k) => {
+      return `CASE_NAME[${JSON.stringify(k)}] = ${this.getCaseVal(this.desAction[k])}`;
     }).join('\n');
-    return `# This sample code uses the Appium python client
-# pip install Appium-Python-Client
-# Then you can paste this into a file and simply run with Python
+    return `# coding = utf-8
+# -*- coding:utf-8 -*-
+
+import sys
+import unittest
 
 from appium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from base.BaseTest import ParametrizedTestCase
 
-caps = {}
-${capStr}
+defaultencoding = 'utf-8'
+if sys.getdefaultencoding() != defaultencoding:
+    reload(sys)
+    sys.setdefaultencoding(defaultencoding)
+    
+CASE_NAME = {}
+${desStr}
 
-driver = webdriver.Remote("${this.serverUrl}", caps)
 
-${code}
-driver.quit()`;
+${code}`;
   }
 
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
@@ -52,6 +59,31 @@ driver.quit()`;
     } else {
       return `${localVar} = driver.find_element_by_${suffixMap[strategy]}(${JSON.stringify(locator)})`;
     }
+  }
+
+  codeFor_createClass (className, classDes) {
+    this.classAction.push(className);
+    this.desAction[className] = classDes;
+    let capStr = Object.keys(this.caps).map((k) => {
+      return `caps[${JSON.stringify(k)}] = ${this.getCaseVal(this.caps[k])}`;
+    }).join('\n');
+    return `class ${className}(ParametrizedTestCase):
+    def __init__(self, methodName='runTest', upKey={}, param=None):
+        caps = {}
+        ${capStr.split('\n').join('\n        ')}
+        super(UserInfoTest, self).__init__(methodName, caps, param)
+    
+    def setUp(self):
+        super(UserInfoTest, self).setUp()`;
+  }
+
+  codeFor_createMethod (methodName, methodDes) {
+    if (!methodName.startsWith('test_')) {
+      methodName = 'test_' + methodName;
+    }
+    this.methodAction.push(methodName);
+    this.desAction[methodName] = methodDes;
+    return `\n    def ${methodName}(self):`;
   }
 
   codeFor_click (varName, varIndex) {
@@ -131,12 +163,12 @@ driver.quit()`;
     return `driver.set_clipboard_text('${clipboardText}')`;
   }
 
-  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
-    return `driver.press_keycode(${keyCode}, ${metaState}, ${flags});`;
+  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode) {
+    return `driver.press_keycode(${keyCode})`;
   }
 
-  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
-    return `driver.long_press_keycode(${keyCode}, ${metaState}, ${flags});`;
+  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode) {
+    return `driver.long_press_keycode(${keyCode})`;
   }
 
   codeFor_hideDeviceKeyboard () {

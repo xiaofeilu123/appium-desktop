@@ -15,17 +15,18 @@ import {
   CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS,
   PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE,
   SELECT_ACTION_GROUP, SELECT_SUB_ACTION_GROUP,
-  SELECT_INTERACTION_MODE, ENTERING_ACTION_ARGS, SET_ACTION_ARG, REMOVE_ACTION, SHOW_SAVE_MODAL, HIDE_SAVE_MODAL
+  SELECT_INTERACTION_MODE, ENTERING_ACTION_ARGS, SET_ACTION_ARG, REMOVE_ACTION, SHOW_SAVE_MODAL, HIDE_SAVE_MODAL,
+  POP_ACTION
 } from '../actions/Inspector';
 import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from '../components/Inspector/shared';
 
-const DEFAULT_FRAMEWORK = 'java';
+const DEFAULT_FRAMEWORK = 'Case';
 
 const INITIAL_STATE = {
   expandedPaths: ['0'],
   isRecording: false,
   showRecord: false,
-  showBoilerplate: false,
+  showBoilerplate: true,
   recordedActions: [],
   actionFramework: DEFAULT_FRAMEWORK,
   sessionDetails: {},
@@ -202,6 +203,12 @@ export default function inspector (state = INITIAL_STATE, action) {
           ...state.recordedActions,
           {action: action.action, params: action.params}
         ]
+      };
+
+    case POP_ACTION:
+      return {
+        ...state,
+        recordedActions: action.action.splice(0, action.action.length - 1)
       };
 
     case ADD_ASSIGNED_VAR_CACHE:

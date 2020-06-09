@@ -36,6 +36,7 @@ export const CLOSE_RECORDER = 'CLOSE_RECORDER';
 export const SET_ACTION_FRAMEWORK = 'SET_ACTION_FRAMEWORK';
 export const SAVED_FRAMEWORK = 'SAVED_FRAMEWORK';
 export const RECORD_ACTION = 'RECORD_ACTION';
+export const POP_ACTION = 'POP_ACTION';
 export const SET_SHOW_BOILERPLATE = 'SET_SHOW_BOILERPLATE';
 
 export const SHOW_LOCATOR_TEST_MODAL = 'SHOW_LOCATOR_TEST_MODAL';
@@ -339,6 +340,12 @@ export function setActionFramework (framework) {
 export function recordAction (action, params) {
   return (dispatch) => {
     dispatch({type: RECORD_ACTION, action, params});
+  };
+}
+
+export function popAction (actions) {
+  return (dispatch) => {
+    dispatch({type: POP_ACTION, action: actions});
   };
 }
 

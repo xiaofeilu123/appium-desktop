@@ -11,6 +11,9 @@ export default class Framework {
     this.localVarCount = 0;
     this.localVarCache = {};
     this.lastAssignedVar = null;
+    this.classAction = [];
+    this.methodAction = [];
+    this.desAction = {};
   }
 
   get serverUrl () {

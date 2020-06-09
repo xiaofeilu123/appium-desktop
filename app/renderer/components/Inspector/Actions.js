@@ -20,9 +20,15 @@ export default class Actions extends Component {
   }
 
   executeCommand () {
-    const { pendingAction, cancelPendingAction, applyClientMethod, t } = this.props;
+    const { pendingAction, cancelPendingAction, applyClientMethod, recordAction, t } = this.props;
     let {args, action} = pendingAction;
     let {methodName} = action;
+
+    if (action.isOnlyAdd) {
+      recordAction(methodName, args);
+      cancelPendingAction();
+      return;
+    }
 
     // Special case for 'startActivity'
     // TODO: Fix these... args aren't getting through
