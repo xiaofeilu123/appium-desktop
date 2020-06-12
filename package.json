@@ -4,22 +4,22 @@
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/appium/appium-desktop.git"
+    "url": "git+https://github.com/xiaofeilu123/appium-desktop.git"
   },
   "author": {
-    "name": "Appium Developers",
+    "name": "Sumavision Appium Developers",
     "email": "",
-    "url": "https://github.com/appium"
+    "url": ""
   },
   "license": "APACHE2",
   "bugs": {
-    "url": "https://github.com/appium/appium-desktop/issues"
+    "url": "https://github.com/xiaofeilu123/appium-desktop/issues"
   },
   "keywords": [
     "appium"
   ],
   "assetsPath": "assets",
-  "homepage": "https://github.com/appium/appium-desktop",
+  "homepage": "https://github.com/xiaofeilu123/appium-desktop",
   "main": "dist/main.js",
   "scripts": {
     "test": "run-s test:*",
