@@ -89,7 +89,11 @@ export default class Actions extends Component {
       </Row>
       {selectedActionGroup && <Row>
         <Col span={24}>
-          <Select onChange={(actionGroupName) => selectSubActionGroup(actionGroupName)} placeholder={t('Select Sub Group')}>
+          <Select
+            onChange={(actionGroupName) => selectSubActionGroup(actionGroupName)}
+            placeholder={t('Select Sub Group')}
+            value={selectedSubActionGroup}
+          >
             { _.keys(actionDefinitions[selectedActionGroup]).map((actionGroup) => <Option key={actionGroup}>{t(actionGroup)}</Option>) }
           </Select>
         </Col>

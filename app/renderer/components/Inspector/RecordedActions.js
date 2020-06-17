@@ -48,11 +48,7 @@ class RecordedActions extends Component {
 
     const saveCaseValue = [
       ['projectName', 'string'],
-      ['peojectDes', 'string'],
-      ['className', 'string'],
-      ['classDes', 'string'],
-      ['methodName', 'string'],
-      ['methodDes', 'string']
+      ['peojectDes', 'string']
     ];
 
     // let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>

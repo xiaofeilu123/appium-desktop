@@ -22,6 +22,7 @@ class CaseFramework extends Framework {
 
 import sys
 import unittest
+import time
 
 from appium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -55,9 +56,9 @@ ${code}`;
       throw new Error(`Strategy ${strategy} can't be code-gened`);
     }
     if (isArray) {
-      return `${localVar} = driver.find_elements_by_${suffixMap[strategy]}(${JSON.stringify(locator)})`;
+      return `        ${localVar} = self.driver.find_elements_by_${suffixMap[strategy]}(${JSON.stringify(locator)})`;
     } else {
-      return `${localVar} = driver.find_element_by_${suffixMap[strategy]}(${JSON.stringify(locator)})`;
+      return `        ${localVar} = self.driver.find_element_by_${suffixMap[strategy]}(${JSON.stringify(locator)})`;
     }
   }
 
@@ -86,20 +87,24 @@ ${code}`;
     return `\n    def ${methodName}(self):`;
   }
 
+  codeFor_createPrint (value) {
+    return `        print str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))) + '   ' + '${value}'`;
+  }
+
   codeFor_click (varName, varIndex) {
-    return `${this.getVarName(varName, varIndex)}.click()`;
+    return `        ${this.getVarName(varName, varIndex)}.click()`;
   }
 
   codeFor_clear (varName, varIndex) {
-    return `${this.getVarName(varName, varIndex)}.clear()`;
+    return `        ${this.getVarName(varName, varIndex)}.clear()`;
   }
 
   codeFor_sendKeys (varName, varIndex, text) {
-    return `${this.getVarName(varName, varIndex)}.send_keys(${JSON.stringify(text)})`;
+    return `        ${this.getVarName(varName, varIndex)}.send_keys(${JSON.stringify(text)})`;
   }
 
   codeFor_back () {
-    return `driver.back()`;
+    return `        self.driver.back()`;
   }
 
   codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
@@ -116,207 +121,207 @@ ${code}`;
   }
 
   codeFor_getCurrentActivity () {
-    return `activity_name = driver.current_activity`;
+    return `        activity_name = self.driver.current_activity`;
   }
 
   codeFor_getCurrentPackage () {
-    return `package_name = driver.current_package`;
+    return `        package_name = self.driver.current_package`;
   }
 
   codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
-    return `driver.install_app('${app}');`;
+    return `        self.driver.install_app('${app}');`;
   }
 
   codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
-    return `is_app_installed = driver.isAppInstalled("${app}");`;
+    return `        is_app_installed = self.driver.isAppInstalled("${app}");`;
   }
 
   codeFor_launchApp () {
-    return `driver.launch_app()`;
+    return `        self.driver.launch_app()`;
   }
 
   codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
-    return `driver.background_app(${timeout})`;
+    return `        self.driver.background_app(${timeout})`;
   }
 
   codeFor_closeApp () {
-    return `driver.close_app()`;
+    return `        self.driver.close_app()`;
   }
 
   codeFor_resetApp () {
-    return `driver.reset()`;
+    return `        self.driver.reset()`;
   }
 
   codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
-    return `driver.remove_app('${app}');`;
+    return `        self.driver.remove_app('${app}');`;
   }
 
   codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
-    return `appStrings = driver.app_strings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''})`;
+    return `        appStrings = self.driver.app_strings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''})`;
   }
 
   codeFor_getClipboard () {
-    return `clipboard_text = driver.get_clipboard_text()`;
+    return `        clipboard_text = self.driver.get_clipboard_text()`;
   }
 
   codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
-    return `driver.set_clipboard_text('${clipboardText}')`;
+    return `        self.driver.set_clipboard_text('${clipboardText}')`;
   }
 
   codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode) {
-    return `driver.press_keycode(${keyCode})`;
+    return `        self.driver.press_keycode(${keyCode})`;
   }
 
   codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode) {
-    return `driver.long_press_keycode(${keyCode})`;
+    return `        self.driver.long_press_keycode(${keyCode})`;
   }
 
   codeFor_hideDeviceKeyboard () {
-    return `driver.hide_keyboard()`;
+    return `        self.driver.hide_keyboard()`;
   }
 
   codeFor_isKeyboardShown () {
-    return `# isKeyboardShown not supported`;
+    return `        # isKeyboardShown not supported`;
   }
 
   codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
-    return `driver.push_file('${pathToInstallTo}', '${fileContentString}');`;
+    return `        self.driver.push_file('${pathToInstallTo}', '${fileContentString}');`;
   }
 
   codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
-    return `file_base64 = self.driver.pull_file('${pathToPullFrom}');`;
+    return `        file_base64 = self.driver.pull_file('${pathToPullFrom}');`;
   }
 
   codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
-    return `file_base64 = self.driver.pull_folder('${folderToPullFrom}');`;
+    return `        file_base64 = self.driver.pull_folder('${folderToPullFrom}');`;
   }
 
   codeFor_toggleAirplaneMode () {
-    return `# Not supported: toggleAirplaneMode`;
+    return `        # Not supported: toggleAirplaneMode`;
   }
 
   codeFor_toggleData () {
-    return `# Not supported: toggleData`;
+    return `        # Not supported: toggleData`;
   }
 
   codeFor_toggleWiFi () {
-    return `# Not supported: toggleWifi`;
+    return `        # Not supported: toggleWifi`;
   }
 
   codeFor_toggleLocationServices () {
-    return `driver.toggle_location_services();`;
+    return `        self.driver.toggle_location_services();`;
   }
 
   codeFor_sendSMS () {
-    return `# Not supported: sendSMS`;
+    return `        # Not supported: sendSMS`;
   }
 
   codeFor_gsmCall () {
-    return `# Not supported: gsmCall`;
+    return `        # Not supported: gsmCall`;
   }
 
   codeFor_gsmSignal () {
-    return `# Not supported: gsmSignal`;
+    return `        # Not supported: gsmSignal`;
   }
 
   codeFor_gsmVoice () {
-    return `# Not supported: gsmVoice`;
+    return `        # Not supported: gsmVoice`;
   }
 
   codeFor_shake () {
-    return `driver.shake();`;
+    return `        self.driver.shake();`;
   }
 
   codeFor_lock (varNameIgnore, varIndexIgnore, seconds) {
-    return `driver.lock(${seconds});`;
+    return `        self.driver.lock(${seconds});`;
   }
 
   codeFor_unlock () {
-    return `driver.unlock();`;
+    return `        self.driver.unlock();`;
   }
 
   codeFor_isLocked () {
-    return `# Not supported: is device locked`;
+    return `        # Not supported: is device locked`;
   }
 
   codeFor_rotateDevice () {
-    return `# Not supported: rotate device`;
+    return `        # Not supported: rotate device`;
   }
 
   codeFor_getPerformanceData () {
-    return `# Not supported: getPerformanceData`;
+    return `        # Not supported: getPerformanceData`;
   }
 
   codeFor_getSupportedPerformanceDataTypes () {
-    return `# Not supported: getSupportedPerformanceDataTypes`;
+    return `        # Not supported: getSupportedPerformanceDataTypes`;
   }
 
   codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
-    return `driver.touch_id(${match})`;
+    return `        self.driver.touch_id(${match})`;
   }
 
   codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
-    return `driver.toggle_touch_id_enrollment(${enroll})`;
+    return `        self.driver.toggle_touch_id_enrollment(${enroll})`;
   }
 
   codeFor_openNotifications () {
-    return `driver.open_notifications();`;
+    return `        self.driver.open_notifications();`;
   }
 
   codeFor_getDeviceTime () {
-    return `time = self.driver.device_time()`;
+    return `        time = self.driver.device_time()`;
   }
 
   codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
-    return `driver.finger_print(${fingerprintId})`;
+    return `        self.driver.finger_print(${fingerprintId})`;
   }
 
   codeFor_sessionCapabilities () {
-    return `desired_caps = self.driver.desired_capabilities()`;
+    return `        desired_caps = self.driver.desired_capabilities()`;
   }
 
   codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `driver.set_page_load_timeout(${ms})`;
+    return `        self.driver.set_page_load_timeout(${ms})`;
   }
 
   codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `driver.timeouts('script', ${ms})`;
+    return `        self.driver.timeouts('script', ${ms})`;
   }
 
   codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `driver.timeouts('implicit', ${ms})`;
+    return `        self.driver.timeouts('implicit', ${ms})`;
   }
 
   codeFor_getOrientation () {
-    return `orientation = self.driver.orientation()`;
+    return `        orientation = self.driver.orientation()`;
   }
 
   codeFor_setOrientation (varNameIgnore, varIndexIgnore, orientation) {
-    return `driver.orientation = "${orientation}"`;
+    return `        self.driver.orientation = "${orientation}"`;
   }
 
   codeFor_getGeoLocation () {
-    return `location = self.driver.location()`;
+    return `        location = self.driver.location()`;
   }
 
   codeFor_setGeoLocation (varNameIgnore, varIndexIgnore, latitude, longitude, altitude) {
-    return `driver.set_location(${latitude}, ${longitude}, ${altitude})`;
+    return `        self.driver.set_location(${latitude}, ${longitude}, ${altitude})`;
   }
 
   codeFor_logTypes () {
-    return `log_types = driver.log_types();`;
+    return `        log_types = self.driver.log_types();`;
   }
 
   codeFor_log (varNameIgnore, varIndexIgnore, logType) {
-    return `logs = driver.get_log('${logType}');`;
+    return `        logs = self.driver.get_log('${logType}');`;
   }
 
   codeFor_updateSettings (varNameIgnore, varIndexIgnore, settingsJson) {
-    return `driver.update_settings(${settingsJson}))`;
+    return `        self.driver.update_settings(${settingsJson}))`;
   }
 
   codeFor_settings () {
-    return `settings = driver.get_settings`;
+    return `        settings = self.driver.get_settings`;
   }
 }
 

@@ -3,7 +3,7 @@ import { notification } from 'antd';
 import { push } from 'connected-react-router';
 import _ from 'lodash';
 import B from 'bluebird';
-import { getLocators } from '../components/Inspector/shared';
+import {actionDefinitions, getLocators} from '../components/Inspector/shared';
 import { showError } from './Session';
 import { bindClient, unbindClient, callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
@@ -492,8 +492,10 @@ export function keepSessionAlive () {
 }
 
 export function selectActionGroup (group) {
+  let selectSubActionGroup = _.keys(actionDefinitions[group])[0];
   return (dispatch) => {
     dispatch({type: SELECT_ACTION_GROUP, group});
+    dispatch({type: SELECT_SUB_ACTION_GROUP, group: selectSubActionGroup});
   };
 }
 

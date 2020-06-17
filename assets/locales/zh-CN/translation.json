@@ -296,6 +296,8 @@
   "Method": "方法",
   "Create Method": "创建方法",
   "Edit Method": "修改方法",
+  "Print": "打印信息",
+  "Create Print": "创建打印信息",
   "Session": "Session会话",
   "Session Capabilities": "Session 会话能力",
   "Get Session Capabilities": "获取Session 会话能力",
