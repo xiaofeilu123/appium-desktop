@@ -92,7 +92,9 @@
       "oneClick": false
     },
     "nsis": {
-      "oneClick": false
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true
     },
     "linux": {
       "artifactName": "${productName}-linux-${version}.${ext}",
