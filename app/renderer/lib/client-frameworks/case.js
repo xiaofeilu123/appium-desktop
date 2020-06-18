@@ -72,10 +72,10 @@ ${code}`;
     def __init__(self, methodName='runTest', upKey={}, param=None):
         caps = {}
         ${capStr.split('\n').join('\n        ')}
-        super(UserInfoTest, self).__init__(methodName, caps, param)
+        super(${className}, self).__init__(methodName, caps, param)
     
     def setUp(self):
-        super(UserInfoTest, self).setUp()`;
+        super(${className}, self).setUp()`;
   }
 
   codeFor_createMethod (methodName, methodDes) {

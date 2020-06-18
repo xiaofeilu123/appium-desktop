@@ -16,7 +16,7 @@ import {
   PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE,
   SELECT_ACTION_GROUP, SELECT_SUB_ACTION_GROUP,
   SELECT_INTERACTION_MODE, ENTERING_ACTION_ARGS, SET_ACTION_ARG, REMOVE_ACTION, SHOW_SAVE_MODAL, HIDE_SAVE_MODAL,
-  POP_ACTION
+  POP_ACTION, SAVE_CASE_ACTION
 } from '../actions/Inspector';
 import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from '../components/Inspector/shared';
 
@@ -43,6 +43,7 @@ const INITIAL_STATE = {
   selectedInteractionMode: INTERACTION_MODE.SOURCE,
   pendingAction: null,
   isShowSaveModal: false,
+  saveCaseAction: [],
 };
 
 /**
@@ -394,6 +395,12 @@ export default function inspector (state = INITIAL_STATE, action) {
       return {
         ...state,
         isShowSaveModal: true,
+      };
+
+    case SAVE_CASE_ACTION:
+      return {
+        ...state,
+        saveCaseAction: Object.assign([], state.saveCaseAction, {[action.index]: action.value}),
       };
 
     case HIDE_SAVE_MODAL:

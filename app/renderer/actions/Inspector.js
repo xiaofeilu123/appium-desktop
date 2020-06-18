@@ -1,12 +1,13 @@
-import { ipcRenderer } from 'electron';
-import { notification } from 'antd';
-import { push } from 'connected-react-router';
+import {ipcRenderer} from 'electron';
+import {notification} from 'antd';
+import {push} from 'connected-react-router';
 import _ from 'lodash';
 import B from 'bluebird';
+import {fs} from 'appium-support';
 import {actionDefinitions, getLocators} from '../components/Inspector/shared';
-import { showError } from './Session';
-import { bindClient, unbindClient, callClientMethod } from './shared';
-import { getOptimalXPath } from '../util';
+import {showError} from './Session';
+import {bindClient, unbindClient, callClientMethod} from './shared';
+import {getOptimalXPath} from '../util';
 import frameworks from '../lib/client-frameworks';
 import settings from '../../shared/settings';
 import i18n from '../../configs/i18next.config.renderer';
@@ -70,6 +71,7 @@ export const SET_ACTION_ARG = 'SET_ACTION_ARG';
 
 export const SHOW_SAVE_MODAL = 'SHOW_SAVE_MODAL';
 export const HIDE_SAVE_MODAL = 'HIDE_SAVE_MODAL';
+export const SAVE_CASE_ACTION = 'SAVE_CASE_ACTION';
 
 
 // Attributes on nodes that we know are unique to the node
@@ -393,6 +395,33 @@ export function setLocatorTestStrategy (locatorTestStrategy) {
   };
 }
 
+export function saveCaseFile (filePath, proDir, fileName, value) {
+  return (dispatch) => {
+    dispatch({type: METHOD_CALL_REQUESTED});
+    let path = filePath + '\\' + proDir + '\\' + fileName;
+    fs.exists(filePath)
+      .then((value) => {
+        if (!value) {
+          return fs.mkdir(filePath).then(() => {
+            return fs.exists(filePath + '\\' + proDir);
+          });
+        } else {
+          return fs.exists(filePath + '\\' + proDir);
+        }
+      }).then((value) => {
+        if (!value) {
+          return fs.mkdir(filePath + '\\' + proDir);
+        } else {
+          fs.writeFile(path, value, {flag: 'w'});
+          dispatch({type: METHOD_CALL_DONE});
+        }
+      }).then(() => {
+        fs.writeFile(path, value, {flag: 'w'});
+        dispatch({type: METHOD_CALL_DONE});
+      });
+  };
+}
+
 export function showSaveCaseModal () {
   return (dispatch) => {
     dispatch({type: SHOW_SAVE_MODAL});
@@ -526,5 +555,11 @@ export function cancelPendingAction () {
 export function setActionArg (index, value) {
   return (dispatch) => {
     dispatch({type: SET_ACTION_ARG, index, value});
+  };
+}
+
+export function saveCaseActionArg (index, value) {
+  return (dispatch) => {
+    dispatch({type: SAVE_CASE_ACTION, index, value});
   };
 }

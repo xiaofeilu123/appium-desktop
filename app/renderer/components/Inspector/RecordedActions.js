@@ -1,6 +1,7 @@
 import { clipboard } from 'electron';
 import React, { Component } from 'react';
 import _ from 'lodash';
+import FPath from 'path';
 import ReactDOM from 'react-dom';
 import { Input, Card, Tooltip, Modal, Button, Icon, Row, Col } from 'antd';
 import InspectorStyles from './Inspector.css';
@@ -29,6 +30,27 @@ class RecordedActions extends Component {
     return highlight(framework.language, rawCode, true).value;
   }
 
+  saveCase () {
+    const {
+      actionFramework,
+      recordedActions,
+      sessionDetails,
+      hideSaveCaseModal,
+      saveCaseFile,
+      saveCaseAction
+    } = this.props;
+    let {host, port, path, https, desiredCapabilities} = sessionDetails;
+    let framework = new frameworks[actionFramework](host, port, path,
+      https, desiredCapabilities);
+    framework.actions = recordedActions;
+    let rawCode = framework.getCodeString(true);
+    let fileDir = FPath.resolve(__dirname, 'case');
+    let proDir = saveCaseAction['0'];
+    let fileName = framework.classAction[0] + '.py';
+    hideSaveCaseModal();
+    saveCaseFile(fileDir, proDir, fileName, rawCode);
+  }
+
   actionBar () {
     const {
       showBoilerplate,
@@ -43,6 +65,7 @@ class RecordedActions extends Component {
       // actionFramework,
       isRecording,
       isShowSaveModal,
+      saveCaseActionArg,
       t,
     } = this.props;
 
@@ -108,7 +131,7 @@ class RecordedActions extends Component {
         <Modal
           title={t('save test case')}
           visible={isShowSaveModal}
-          onOk={() => showSaveCaseModal()}
+          onOk={() => this.saveCase()}
           onCancel={() => hideSaveCaseModal()}
           okText={t('Execute')}
           cancelText={t('Quit')}
@@ -116,7 +139,7 @@ class RecordedActions extends Component {
           {_.map(saveCaseValue,
             ([argName, argType], index) => <Row key={index} gutter={16}>
               <Col span={24} className={InspectorStyles['arg-container']}>
-                {argType === 'string' && <Input addonBefore={t(argName)}/>}
+                {argType === 'string' && <Input onChange={(e) => saveCaseActionArg(index, e.target.value)} addonBefore={t(argName)}/>}
               </Col>
             </Row>)}
         </Modal>
