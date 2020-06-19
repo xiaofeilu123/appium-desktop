@@ -37,7 +37,21 @@ CASE_NAME = {}
 ${desStr}
 
 
-${code}`;
+${code}
+    @staticmethod
+    def getSuite(param=None):
+        suite = unittest.TestSuite()
+        suite.addTest(ParametrizedTestCase.parametrize(LauncherTest, param))
+        return suite
+
+    @staticmethod
+    def getCaseName(name):
+        return CASE_NAME[name]
+
+    @staticmethod
+    def isHasChildCase(name):
+        return False
+`;
   }
 
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
