@@ -20,7 +20,7 @@ import {
 } from '../actions/Inspector';
 import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from '../components/Inspector/shared';
 
-const DEFAULT_FRAMEWORK = 'Case';
+const DEFAULT_FRAMEWORK = 'python';
 
 const INITIAL_STATE = {
   expandedPaths: ['0'],

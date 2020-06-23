@@ -36,19 +36,17 @@ class RecordedActions extends Component {
       recordedActions,
       sessionDetails,
       hideSaveCaseModal,
-      saveCaseFile,
-      saveCaseAction
+      saveCaseFile
     } = this.props;
     let {host, port, path, https, desiredCapabilities} = sessionDetails;
     let framework = new frameworks[actionFramework](host, port, path,
       https, desiredCapabilities);
     framework.actions = recordedActions;
-    let rawCode = framework.getCodeString(true);
+    let rawCode = framework.getSaveArr();
     let fileDir = FPath.resolve(__dirname, 'case');
-    let proDir = saveCaseAction['0'];
-    let fileName = framework.classAction[0] + '.py';
+    // let fileName = saveCaseAction['0'] + '.json';
     hideSaveCaseModal();
-    saveCaseFile(fileDir, proDir, fileName, rawCode);
+    saveCaseFile(fileDir, rawCode);
   }
 
   actionBar () {
@@ -71,7 +69,11 @@ class RecordedActions extends Component {
 
     const saveCaseValue = [
       ['projectName', 'string'],
-      ['peojectDes', 'string']
+      ['peojectDes', 'string'],
+      ['className', 'string'],
+      ['classDes', 'string'],
+      ['methodName', 'string'],
+      ['methodDes', 'string']
     ];
 
     // let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>

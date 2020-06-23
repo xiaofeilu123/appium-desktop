@@ -62,97 +62,97 @@ const { STRING, NUMBER } = actionArgTypes;
 
 // Note: When adding or removing actionDefinitions, update `en/translation.json`
 export const actionDefinitions = {
-  'Basic': {
-    'Class': {
-      'Create Class': {methodName: 'createClass', args: [['className', STRING], ['classDes', STRING]], isOnlyAdd: true},
-      // 'Edit Class': {methodName: 'editClass', args: [['className', STRING], ['classDes', STRING]], isOnlyAdd: true},
-    },
-    'Method': {
-      'Create Method': {methodName: 'createMethod', args: [['methodName', STRING], ['methodDes', STRING]], isOnlyAdd: true},
-      // 'Edit Method': {methodName: 'editMethod', args: [['methodName', STRING], ['methodDes', STRING]], isOnlyAdd: true},
-    },
-    'Print': {
-      'Create Print': {methodName: 'createPrint', args: [['value', STRING]], isOnlyAdd: true},
-    },
-  },
+  // 'Basic': {
+  //   'Class': {
+  //     'Create Class': {methodName: 'createClass', args: [['className', STRING], ['classDes', STRING]], isOnlyAdd: true},
+  //     // 'Edit Class': {methodName: 'editClass', args: [['className', STRING], ['classDes', STRING]], isOnlyAdd: true},
+  //   },
+  //   'Method': {
+  //     'Create Method': {methodName: 'createMethod', args: [['methodName', STRING], ['methodDes', STRING]], isOnlyAdd: true},
+  //     // 'Edit Method': {methodName: 'editMethod', args: [['methodName', STRING], ['methodDes', STRING]], isOnlyAdd: true},
+  //   },
+  //   'Print': {
+  //     'Create Print': {methodName: 'createPrint', args: [['value', STRING]], isOnlyAdd: true},
+  //   },
+  // },
   'Device': {
     'Android Activity': {
       'Start Activity': {methodName: 'startActivity', args: [
         ['appPackage', STRING], ['appActivity', STRING], ['appWaitPackage', STRING],
         ['intentAction', STRING], ['intentCategory', STRING], ['intentFlags', STRING],
         ['optionalIntentArguments', STRING], ['dontStopAppOnReset', STRING],
-      ], refresh: true},
+      ], refresh: false},
       'Current Activity': {methodName: 'getCurrentActivity'},
       'Current Package': {methodName: 'getCurrentPackage'},
     },
     'App': {
       'Install App': {methodName: 'installAppOnDevice', args: [['appPathOrUrl', STRING]]},
       'Is App Installed': {methodName: 'isAppInstalledOnDevice', args: [['appId', STRING]]},
-      'Launch App': {methodName: 'launchApp', refresh: true},
-      'Background App': {methodName: 'backgroundApp', args: [['timeout', NUMBER]], refresh: true},
-      'Close App': {methodName: 'closeApp', refresh: true},
-      'Reset App': {methodName: 'resetApp', refresh: true},
+      'Launch App': {methodName: 'launchApp', refresh: false},
+      'Background App': {methodName: 'backgroundApp', args: [['timeout', NUMBER]], refresh: false},
+      'Close App': {methodName: 'closeApp', refresh: false},
+      'Reset App': {methodName: 'resetApp', refresh: false},
       'Remove App': {methodName: 'removeAppFromDevice', args: [['bundleId', STRING]]},
-      'Get App Strings': {methodName: 'getAppStrings', args: [['language', STRING], ['stringFile', STRING]], refresh: true},
+      // 'Get App Strings': {methodName: 'getAppStrings', args: [['language', STRING], ['stringFile', STRING]], refresh: true},
     },
-    'File': {
-      'Push File': {methodName: 'pushFileToDevice', args: [['pathToInstallTo', STRING], ['fileContentString', STRING]]},
-      'Pull File': {methodName: 'pullFile', args: [['pathToPullFrom', STRING]]},
-      'Pull Folder': {methodName: 'pullFolder', args: [['folderToPullFrom', STRING]]},
-    },
-    'Interaction': {
-      'Shake': {methodName: 'shake'},
-      'Lock': {methodName: 'lock', args: [['seconds', NUMBER]], refresh: true},
-      'Unlock': {methodName: 'unlock', refresh: true},
-      'Is Device Locked': {methodName: 'isLocked'},
-      'Rotate Device': {methodName: 'rotateDevice', args: [
-        ['x', NUMBER], ['y', NUMBER], ['radius', NUMBER], ['rotatation', NUMBER], ['touchCount', NUMBER], ['duration', NUMBER]
-      ], refresh: true},
-    },
+    // 'File': {
+    //   'Push File': {methodName: 'pushFileToDevice', args: [['pathToInstallTo', STRING], ['fileContentString', STRING]]},
+    //   'Pull File': {methodName: 'pullFile', args: [['pathToPullFrom', STRING]]},
+    //   'Pull Folder': {methodName: 'pullFolder', args: [['folderToPullFrom', STRING]]},
+    // },
+    // 'Interaction': {
+    //   'Shake': {methodName: 'shake'},
+    //   'Lock': {methodName: 'lock', args: [['seconds', NUMBER]], refresh: true},
+    //   'Unlock': {methodName: 'unlock', refresh: true},
+    //   'Is Device Locked': {methodName: 'isLocked'},
+    //   'Rotate Device': {methodName: 'rotateDevice', args: [
+    //     ['x', NUMBER], ['y', NUMBER], ['radius', NUMBER], ['rotatation', NUMBER], ['touchCount', NUMBER], ['duration', NUMBER]
+    //   ], refresh: true},
+    // },
     'Keys': {
-      'Press Key': {methodName: 'pressKeycode', args: [['keyCode', NUMBER]], refresh: true},
-      'Long Press Key': {methodName: 'longPressKeycode', args: [['keyCode', NUMBER]], refresh: true},
-      'Hide Keyboard': {methodName: 'hideDeviceKeyboard', refresh: true},
-      'Is Keyboard Shown': {methodName: 'isKeyboardShown'},
+      'Press Key': {methodName: 'pressKeycode', args: [['keyCode', NUMBER]], refresh: false},
+      'Long Press Key': {methodName: 'longPressKeycode', args: [['keyCode', NUMBER]], refresh: false},
+      // 'Hide Keyboard': {methodName: 'hideDeviceKeyboard', refresh: true},
+      // 'Is Keyboard Shown': {methodName: 'isKeyboardShown'},
     },
-    'Network': {
-      'Toggle Airplane Mode': {methodName: 'toggleAirplaneMode'},
-      'Toggle Data': {methodName: 'toggleData'},
-      'Toggle WiFi': {methodName: 'toggleWiFi'},
-      'Toggle Location Services': {methodName: 'toggleLocationServices'},
-      'Send SMS': {methodName: 'sendSMS', args: [['phoneNumber', STRING], ['text', STRING]]},
-      'GSM Call': {methodName: 'gsmCall', args: [['phoneNumber', STRING], ['action', STRING]]},
-      'GSM Signal': {methodName: 'gsmSignal', args: [['signalStrengh', NUMBER]]},
-      'GSM Voice': {methodName: 'gsmVoice', args: [['state', STRING]]},
-    },
-    'Performance Data': {
-      'Get Data': {methodName: 'getPerformanceData', args: [['packageName', STRING], ['dataType', STRING], ['dataReadTimeout', NUMBER]]},
-      'Get Data Types': {methodName: 'getSupportedPerformanceDataTypes'},
-    },
+    // 'Network': {
+    //   'Toggle Airplane Mode': {methodName: 'toggleAirplaneMode'},
+    //   'Toggle Data': {methodName: 'toggleData'},
+    //   'Toggle WiFi': {methodName: 'toggleWiFi'},
+    //   'Toggle Location Services': {methodName: 'toggleLocationServices'},
+    //   'Send SMS': {methodName: 'sendSMS', args: [['phoneNumber', STRING], ['text', STRING]]},
+    //   'GSM Call': {methodName: 'gsmCall', args: [['phoneNumber', STRING], ['action', STRING]]},
+    //   'GSM Signal': {methodName: 'gsmSignal', args: [['signalStrengh', NUMBER]]},
+    //   'GSM Voice': {methodName: 'gsmVoice', args: [['state', STRING]]},
+    // },
+    // 'Performance Data': {
+    //   'Get Data': {methodName: 'getPerformanceData', args: [['packageName', STRING], ['dataType', STRING], ['dataReadTimeout', NUMBER]]},
+    //   'Get Data Types': {methodName: 'getSupportedPerformanceDataTypes'},
+    // },
     'System': {
-      'Open Notifications': {methodName: 'openNotifications', refresh: true},
+      // 'Open Notifications': {methodName: 'openNotifications', refresh: true},
       'Get System Time': {methodName: 'getDeviceTime'},
-      'Fingerprint (Android)': {methodName: 'fingerprint', args: [['fingerPrintId', NUMBER]], refresh: true}
+      // 'Fingerprint (Android)': {methodName: 'fingerprint', args: [['fingerPrintId', NUMBER]], refresh: true}
     },
   },
-  'Session': {
-    'Session Capabilities': {
-      'Get Session Capabilities': {methodName: 'sessionCapabilities'}
-    },
-    'Timeouts': {
-      'Set Pageload Timeout': {methodName: 'setPageLoadTimeout', args: [['timeout', NUMBER]]},
-      'Set Script Timeout': {methodName: 'setAsyncScriptTimeout', args: [['timeout', NUMBER]]},
-      'Set Implicit Timeout': {methodName: 'setImplicitWaitTimeout', args: [['timeout', NUMBER]]},
-    },
-    'Orientation': {
-      'Get Orientation': {methodName: 'getOrientation'},
-      'Set Orientation': {methodName: 'setOrientation', args: [['orientation', STRING]], refresh: true},
-    },
-    'Geolocation': {
-      'Get Geolocation': {methodName: 'getGeoLocation'},
-      'Set Geolocation': {methodName: 'setGeoLocation', args: [['latitude', NUMBER], ['longitude', NUMBER], ['altitude', NUMBER]]},
-    },
-  },
+  // 'Session': {
+  //   'Session Capabilities': {
+  //     'Get Session Capabilities': {methodName: 'sessionCapabilities'}
+  //   },
+  //   'Timeouts': {
+  //     'Set Pageload Timeout': {methodName: 'setPageLoadTimeout', args: [['timeout', NUMBER]]},
+  //     'Set Script Timeout': {methodName: 'setAsyncScriptTimeout', args: [['timeout', NUMBER]]},
+  //     'Set Implicit Timeout': {methodName: 'setImplicitWaitTimeout', args: [['timeout', NUMBER]]},
+  //   },
+  //   'Orientation': {
+  //     'Get Orientation': {methodName: 'getOrientation'},
+  //     'Set Orientation': {methodName: 'setOrientation', args: [['orientation', STRING]], refresh: true},
+  //   },
+  //   'Geolocation': {
+  //     'Get Geolocation': {methodName: 'getGeoLocation'},
+  //     'Set Geolocation': {methodName: 'setGeoLocation', args: [['latitude', NUMBER], ['longitude', NUMBER], ['altitude', NUMBER]]},
+  //   },
+  // },
 };
 
 export const INTERACTION_MODE = {

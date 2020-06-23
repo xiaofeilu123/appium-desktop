@@ -71,6 +71,10 @@ export default class Framework {
     return `el${this.localVarCount}`;
   }
 
+  getSaveArr () {
+    return [];
+  }
+
   getVarForFind (strategy, locator) {
     const key = `${strategy}-${locator}`;
     let wasNew = false;

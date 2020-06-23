@@ -12,7 +12,7 @@ settings.defaults({
   [SERVER_ARGS]: null,
   [SESSION_SERVER_PARAMS]: null,
   [SESSION_SERVER_TYPE]: null,
-  [SAVED_FRAMEWORK]: 'Case',
+  [SAVED_FRAMEWORK]: 'python',
 });
 
 export default settings;

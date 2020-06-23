@@ -32,6 +32,21 @@ ${code}
 driver.quit()`;
   }
 
+  getSaveArr () {
+    let str = [];
+    for (let {action, params} of this.actions) {
+      let genCodeFn = `saveFor_${action}`;
+      if (!this[genCodeFn]) {
+        throw new Error(`Need to implement 'saveFor_${action}()'`);
+      }
+      let code = this[genCodeFn](...params);
+      if (code) {
+        str.push(code);
+      }
+    }
+    return JSON.stringify(str);
+  }
+
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: 'xpath',
@@ -54,20 +69,88 @@ driver.quit()`;
     }
   }
 
+  saveFor_findAndAssign (strategy, locator, localVar, isArray) {
+    let suffixMap = {
+      xpath: 'xpath',
+      'accessibility id': 'accessibility_id',
+      'id': 'id',
+      'name': 'name', // TODO: How does Python use name selector
+      'class name': 'class_name',
+      '-android uiautomator': 'android_uiautomator',
+      '-android datamatcher': 'android_datamatcher',
+      '-ios predicate string': 'ios_predicate',
+      '-ios class chain': 'ios_uiautomation', // TODO: Could not find iOS UIAutomation
+    };
+    if (!suffixMap[strategy]) {
+      throw new Error(`Strategy ${strategy} can't be code-gened`);
+    }
+    if (isArray) {
+      return {
+        methodName: `find_elements_by_${suffixMap[strategy]}`,
+        value: [locator],
+        selIndex: -1,
+        type: 1
+      };
+    } else {
+      return {
+        methodName: `find_element_by_${suffixMap[strategy]}`,
+        value: [locator],
+        selIndex: -1,
+        type: 1
+      };
+    }
+  }
+
   codeFor_click (varName, varIndex) {
     return `${this.getVarName(varName, varIndex)}.click()`;
+  }
+
+  saveFor_click (varName, varIndex) {
+    return {
+      methodName: `click`,
+      value: [],
+      selIndex: varIndex || varIndex === 0 ? varIndex : -1,
+      type: 2
+    };
   }
 
   codeFor_clear (varName, varIndex) {
     return `${this.getVarName(varName, varIndex)}.clear()`;
   }
 
+  saveFor_clear (varName, varIndex) {
+    return {
+      methodName: `clear`,
+      value: [],
+      selIndex: varIndex || varIndex === 0 ? varIndex : -1,
+      type: 2
+    };
+  }
+
   codeFor_sendKeys (varName, varIndex, text) {
     return `${this.getVarName(varName, varIndex)}.send_keys(${JSON.stringify(text)})`;
   }
 
+  saveFor_sendKeys (varName, varIndex, text) {
+    return {
+      methodName: `send_keys`,
+      value: [`${JSON.stringify(text)}`],
+      selIndex: varIndex || varIndex === 0 ? varIndex : -1,
+      type: 2
+    };
+  }
+
   codeFor_back () {
     return `driver.back()`;
+  }
+
+  saveFor_back () {
+    return {
+      methodName: `back`,
+      value: [],
+      selIndex: -1,
+      type: 1
+    };
   }
 
   codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
@@ -87,36 +170,117 @@ driver.quit()`;
     return `activity_name = driver.current_activity`;
   }
 
+  saveFor_getCurrentActivity () {
+    return {
+      methodName: `current_activity`,
+      value: [],
+      selIndex: -1,
+      type: 1
+    };
+  }
+
   codeFor_getCurrentPackage () {
     return `package_name = driver.current_package`;
+  }
+
+  saveFor_getCurrentPackage () {
+    return {
+      methodName: `current_package`,
+      value: [],
+      selIndex: -1,
+      type: 1
+    };
   }
 
   codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
     return `driver.install_app('${app}');`;
   }
 
+  saveFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return {
+      methodName: `install_app`,
+      value: [`${app}`],
+      selIndex: -1,
+      type: 1
+    };
+  }
+
   codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
-    return `is_app_installed = driver.isAppInstalled("${app}");`;
+    return `is_app_installed = driver.is_app_installed("${app}");`;
+  }
+
+  saveFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return {
+      methodName: `is_app_installed`,
+      value: [`${app}`],
+      selIndex: -1,
+      type: 1
+    };
   }
 
   codeFor_launchApp () {
     return `driver.launch_app()`;
   }
 
+  saveFor_launchApp () {
+    return {
+      methodName: `launch_app`,
+      value: [],
+      selIndex: -1,
+      type: 1
+    };
+  }
+
   codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
     return `driver.background_app(${timeout})`;
+  }
+
+  saveFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
+    return {
+      methodName: `launch_app`,
+      value: [parseInt(timeout, 10)],
+      selIndex: -1,
+      type: 1
+    };
   }
 
   codeFor_closeApp () {
     return `driver.close_app()`;
   }
 
+  saveFor_closeApp () {
+    return {
+      methodName: `close_app`,
+      value: [],
+      selIndex: -1,
+      type: 1
+    };
+  }
+
   codeFor_resetApp () {
     return `driver.reset()`;
   }
 
+  saveFor_resetApp () {
+    return {
+      methodName: `reset`,
+      value: [],
+      selIndex: -1,
+      type: 1
+    };
+  }
+
   codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
     return `driver.remove_app('${app}');`;
+  }
+
+  saveFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
+    return {
+      methodName: `remove_app`,
+      value: [`${app}`],
+      selIndex: -1,
+      type: 1
+    };
   }
 
   codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
@@ -131,12 +295,30 @@ driver.quit()`;
     return `driver.set_clipboard_text('${clipboardText}')`;
   }
 
-  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
-    return `driver.press_keycode(${keyCode}, ${metaState}, ${flags});`;
+  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode) {
+    return `driver.press_keycode(${keyCode});`;
   }
 
-  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
-    return `driver.long_press_keycode(${keyCode}, ${metaState}, ${flags});`;
+  saveFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode) {
+    return {
+      methodName: `press_keycode`,
+      value: [keyCode],
+      selIndex: -1,
+      type: 1
+    };
+  }
+
+  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode) {
+    return `driver.long_press_keycode(${keyCode});`;
+  }
+
+  saveFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode) {
+    return {
+      methodName: `long_press_keycode`,
+      value: [keyCode],
+      selIndex: -1,
+      type: 1
+    };
   }
 
   codeFor_hideDeviceKeyboard () {
@@ -152,11 +334,11 @@ driver.quit()`;
   }
 
   codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
-    return `file_base64 = self.driver.pull_file('${pathToPullFrom}');`;
+    return `file_base64 = driver.pull_file('${pathToPullFrom}');`;
   }
 
   codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
-    return `file_base64 = self.driver.pull_folder('${folderToPullFrom}');`;
+    return `file_base64 = driver.pull_folder('${folderToPullFrom}');`;
   }
 
   codeFor_toggleAirplaneMode () {
@@ -232,7 +414,16 @@ driver.quit()`;
   }
 
   codeFor_getDeviceTime () {
-    return `time = self.driver.device_time()`;
+    return `time = driver.device_time()`;
+  }
+
+  saveFor_getDeviceTime () {
+    return {
+      methodName: `device_time`,
+      value: [],
+      selIndex: -1,
+      type: 1
+    };
   }
 
   codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
@@ -240,7 +431,7 @@ driver.quit()`;
   }
 
   codeFor_sessionCapabilities () {
-    return `desired_caps = self.driver.desired_capabilities()`;
+    return `desired_caps = driver.desired_capabilities()`;
   }
 
   codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
@@ -256,7 +447,7 @@ driver.quit()`;
   }
 
   codeFor_getOrientation () {
-    return `orientation = self.driver.orientation()`;
+    return `orientation = driver.orientation()`;
   }
 
   codeFor_setOrientation (varNameIgnore, varIndexIgnore, orientation) {
@@ -264,7 +455,7 @@ driver.quit()`;
   }
 
   codeFor_getGeoLocation () {
-    return `location = self.driver.location()`;
+    return `location = driver.location()`;
   }
 
   codeFor_setGeoLocation (varNameIgnore, varIndexIgnore, latitude, longitude, altitude) {

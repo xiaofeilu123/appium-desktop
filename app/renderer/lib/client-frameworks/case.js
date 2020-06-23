@@ -147,7 +147,7 @@ ${code}
   }
 
   codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
-    return `        is_app_installed = self.driver.isAppInstalled("${app}");`;
+    return `        is_app_installed = self.driver.is_app_installed("${app}");`;
   }
 
   codeFor_launchApp () {

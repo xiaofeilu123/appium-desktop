@@ -4,6 +4,7 @@ import {push} from 'connected-react-router';
 import _ from 'lodash';
 import B from 'bluebird';
 import {fs} from 'appium-support';
+import moment from 'moment';
 import {actionDefinitions, getLocators} from '../components/Inspector/shared';
 import {showError} from './Session';
 import {bindClient, unbindClient, callClientMethod} from './shared';
@@ -325,6 +326,7 @@ export function clearRecording () {
 export function getSavedActionFramework () {
   return async (dispatch) => {
     let framework = await settings.get(SAVED_FRAMEWORK);
+    framework = 'python';
     dispatch({type: SET_ACTION_FRAMEWORK, framework});
   };
 }
@@ -395,28 +397,95 @@ export function setLocatorTestStrategy (locatorTestStrategy) {
   };
 }
 
-export function saveCaseFile (filePath, proDir, fileName, value) {
-  return (dispatch) => {
+export function saveCaseFile (filePath, rawCode) {
+  return (dispatch, getState) => {
+    const state = getState().inspector;
+    const {saveCaseAction} = state;
     dispatch({type: METHOD_CALL_REQUESTED});
-    let path = filePath + '\\' + proDir + '\\' + fileName;
+    let path = filePath + '\\' + saveCaseAction['0'] + '.json';
     fs.exists(filePath)
       .then((value) => {
         if (!value) {
-          return fs.mkdir(filePath).then(() => {
-            return fs.exists(filePath + '\\' + proDir);
-          });
+          return fs.mkdir(filePath);
         } else {
-          return fs.exists(filePath + '\\' + proDir);
+          return fs.readFile(path, {encoding: 'utf-8'}).catch(() => {
+            return new B((resolve) => {
+              resolve();
+            });
+          });
         }
       }).then((value) => {
-        if (!value) {
-          return fs.mkdir(filePath + '\\' + proDir);
-        } else {
-          fs.writeFile(path, value, {flag: 'w'});
-          dispatch({type: METHOD_CALL_DONE});
+        let code = {};
+        if (value) {
+          code = JSON.parse(value);
         }
-      }).then(() => {
-        fs.writeFile(path, value, {flag: 'w'});
+        code.deviceName = '012345679';
+        code.moduleName = saveCaseAction['0'];
+        code.name = saveCaseAction['1'];
+        code.reportDes = '测试人员：Admin\n测试描述：这是一次测试';
+        code.buildTime = moment().format('YYYY-MM-DD hh:mm:ss');
+        code.webPort = 4723;
+        code.testName = saveCaseAction['0'];
+        code.isNeedTest = false;
+        code.isTranscribe = true;
+        code.versionName = '1.0.0';
+        code.versionCode = 1;
+        code.reportPath = filePath;
+        code.reportTitle = saveCaseAction['1'];
+        let isAdd = false;
+        if (code.children) {
+          let clsChild = code.children.filter((item) => {
+            return item.testName === saveCaseAction['2'];
+          });
+          if (clsChild.length > 0) {
+            isAdd = true;
+            let modChild = clsChild[0].children.filter((item) => {
+              if (item.testName === saveCaseAction['4']) {
+                item.testName = saveCaseAction['4'];
+                item.name = saveCaseAction['5'];
+                item.isNeedTest = false;
+                item.isTranscribe = true;
+                item.children = [];
+                item.caseDispose = JSON.parse(rawCode);
+                return true;
+              }
+            });
+            if (modChild.length > 0) {
+            } else {
+              clsChild[0].children.push({
+                testName: saveCaseAction['4'],
+                name: saveCaseAction['5'],
+                isNeedTest: false,
+                isTranscribe: true,
+                children: [],
+                caseDispose: JSON.parse(rawCode)
+              });
+            }
+          }
+        } else {
+          code.children = [];
+        }
+        if (!isAdd) {
+          code.children.push({
+            testName: saveCaseAction['2'],
+            name: saveCaseAction['3'],
+            isNeedTest: false,
+            isTranscribe: true,
+            children: [
+              {
+                testName: saveCaseAction['4'],
+                name: saveCaseAction['5'],
+                isNeedTest: false,
+                isTranscribe: true,
+                children: [],
+                caseDispose: JSON.parse(rawCode)
+              }
+            ]
+          });
+        }
+        fs.writeFile(path, JSON.stringify(code), {flag: 'w'});
+        dispatch({type: METHOD_CALL_DONE});
+      }).catch(() => {
         dispatch({type: METHOD_CALL_DONE});
       });
   };
