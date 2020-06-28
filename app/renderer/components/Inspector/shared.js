@@ -76,6 +76,12 @@ export const actionDefinitions = {
   //   },
   // },
   'Device': {
+    'Print': {
+      'Create Print': {methodName: 'createPrint', args: [['value', STRING]], isOnlyAdd: true},
+    },
+    'Time': {
+      'Create sleep': {methodName: 'createTimeSleep', args: [['value', NUMBER]], isOnlyAdd: true},
+    },
     'Android Activity': {
       'Start Activity': {methodName: 'startActivity', args: [
         ['appPackage', STRING], ['appActivity', STRING], ['appWaitPackage', STRING],

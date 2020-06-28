@@ -298,6 +298,8 @@
   "Edit Method": "修改方法",
   "Print": "打印信息",
   "Create Print": "创建打印信息",
+  "Time": "时间相关",
+  "Create sleep": "创建延时",
   "Session": "Session会话",
   "Session Capabilities": "Session 会话能力",
   "Get Session Capabilities": "获取Session 会话能力",

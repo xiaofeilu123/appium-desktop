@@ -47,6 +47,32 @@ driver.quit()`;
     return JSON.stringify(str);
   }
 
+  codeFor_createPrint (value) {
+    return `print str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))) + '   ' + '${value}'`;
+  }
+
+  saveFor_createPrint (value) {
+    return {
+      methodName: 'myPrint',
+      value: [value],
+      selIndex: -1,
+      type: 0
+    };
+  }
+
+  codeFor_createTimeSleep (value) {
+    return `time.sleep(${value})`;
+  }
+
+  saveFor_createTimeSleep (value) {
+    return {
+      methodName: 'sleep',
+      value: [value],
+      selIndex: -1,
+      type: 0
+    };
+  }
+
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: 'xpath',

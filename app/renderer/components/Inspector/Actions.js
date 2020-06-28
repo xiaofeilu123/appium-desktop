@@ -82,7 +82,7 @@ export default class Actions extends Component {
     return <div className={InspectorStyles['actions-container']}>
       <Row gutter={16} className={InspectorStyles['arg-row']}>
         <Col span={24}>
-          <Select onChange={(actionGroupName) => selectActionGroup(actionGroupName)} placeholder={t('Select Action Group')}>
+          <Select value={selectedActionGroup} onChange={(actionGroupName) => selectActionGroup(actionGroupName)} placeholder={t('Select Action Group')}>
             { _.keys(actionDefinitions).map((actionGroup) => <Option key={actionGroup}>{t(actionGroup)}</Option>) }
           </Select>
         </Col>

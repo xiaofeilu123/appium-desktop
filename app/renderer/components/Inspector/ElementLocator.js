@@ -36,13 +36,13 @@ class ElementLocator extends Component {
     const locatorStrategies = [
       ['id', 'Id'],
       ['xpath', 'XPath'],
-      ['name', 'Name'],
+      // ['name', 'Name'],
       ['class name', 'Class Name'],
-      ['accessibility id', 'Accessibility ID'],
+      // ['accessibility id', 'Accessibility ID'],
       ['-android uiautomator', 'UIAutomator Selector (Android UiAutomator2)'],
-      ['-android datamatcher', 'DataMatcher Selector (Android Espresso)'],
-      ['-ios predicate string', 'Predicate String (iOS)'],
-      ['-ios class chain', 'Class Chain (iOS)'],
+      // ['-android datamatcher', 'DataMatcher Selector (Android Espresso)'],
+      // ['-ios predicate string', 'Predicate String (iOS)'],
+      // ['-ios class chain', 'Class Chain (iOS)'],
     ];
 
     return <div>
