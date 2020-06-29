@@ -11,8 +11,14 @@ const Option = { Select };
 export default class Actions extends Component {
 
   startPerformingAction (actionName, action) {
-    const { startEnteringActionArgs, applyClientMethod } = this.props;
+    const { startEnteringActionArgs, cancelPendingAction, applyClientMethod, recordAction } = this.props;
     if (_.isEmpty(action.args)) {
+      if (action.isOnlyAdd) {
+        let {methodName} = action;
+        recordAction(methodName, []);
+        cancelPendingAction();
+        return;
+      }
       applyClientMethod({methodName: action.methodName, args: [], skipScreenshotAndSource: !action.refresh});
     } else {
       startEnteringActionArgs(actionName, action);

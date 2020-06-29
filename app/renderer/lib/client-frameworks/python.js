@@ -33,18 +33,76 @@ driver.quit()`;
   }
 
   getSaveArr () {
-    let str = [];
+    let str = {
+      config: {},
+      code: []
+    };
+    Object.keys(this.caps).forEach((k) => {
+      str.config[k] = this.caps[k];
+    });
+    let isCir = false;
+    let code = {};
     for (let {action, params} of this.actions) {
       let genCodeFn = `saveFor_${action}`;
       if (!this[genCodeFn]) {
         throw new Error(`Need to implement 'saveFor_${action}()'`);
       }
-      let code = this[genCodeFn](...params);
+      if (action === 'createCirculated') {
+        isCir = false;
+        str.code.push(code);
+        continue;
+      }
+      if (isCir) {
+        code.code.push(this[genCodeFn](...params));
+        continue;
+      }
+      code = this[genCodeFn](...params);
+      if (action === 'createCirculate') {
+        isCir = true;
+        continue;
+      }
       if (code) {
-        str.push(code);
+        str.code.push(code);
       }
     }
     return JSON.stringify(str);
+  }
+
+  codeFor_createCirculate () {
+    return `start circulate`;
+  }
+
+  saveFor_createCirculate (value) {
+    if (value && value !== 0) {
+      return {
+        methodName: 'for',
+        value: [value],
+        selIndex: -1,
+        type: 0,
+        code: []
+      };
+    } else {
+      return {
+        methodName: 'while',
+        value: [],
+        selIndex: -1,
+        type: 0,
+        code: []
+      };
+    }
+  }
+
+  codeFor_createCirculated () {
+    return `stop circulate`;
+  }
+
+  saveFor_createCirculated () {
+    return {
+      methodName: 'stopCirculate',
+      value: [],
+      selIndex: -1,
+      type: 0
+    };
   }
 
   codeFor_createPrint (value) {

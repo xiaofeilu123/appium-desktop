@@ -62,19 +62,15 @@ const { STRING, NUMBER } = actionArgTypes;
 
 // Note: When adding or removing actionDefinitions, update `en/translation.json`
 export const actionDefinitions = {
-  // 'Basic': {
-  //   'Class': {
-  //     'Create Class': {methodName: 'createClass', args: [['className', STRING], ['classDes', STRING]], isOnlyAdd: true},
-  //     // 'Edit Class': {methodName: 'editClass', args: [['className', STRING], ['classDes', STRING]], isOnlyAdd: true},
-  //   },
-  //   'Method': {
-  //     'Create Method': {methodName: 'createMethod', args: [['methodName', STRING], ['methodDes', STRING]], isOnlyAdd: true},
-  //     // 'Edit Method': {methodName: 'editMethod', args: [['methodName', STRING], ['methodDes', STRING]], isOnlyAdd: true},
-  //   },
-  //   'Print': {
-  //     'Create Print': {methodName: 'createPrint', args: [['value', STRING]], isOnlyAdd: true},
-  //   },
-  // },
+  'Basic': {
+    'circulate': {
+      'Create circulate': {methodName: 'createCirculate', args: [['times', NUMBER]], isOnlyAdd: true},
+      'Create circulated': {methodName: 'createCirculated', isOnlyAdd: true},
+    },
+    // 'Print': {
+    //   'Create Print': {methodName: 'createPrint', args: [['value', STRING]], isOnlyAdd: true},
+    // },
+  },
   'Device': {
     'Print': {
       'Create Print': {methodName: 'createPrint', args: [['value', STRING]], isOnlyAdd: true},

@@ -402,6 +402,7 @@ export function saveCaseFile (filePath, rawCode) {
     const state = getState().inspector;
     const {saveCaseAction} = state;
     dispatch({type: METHOD_CALL_REQUESTED});
+    rawCode = JSON.parse(rawCode);
     let path = filePath + '\\' + saveCaseAction['0'] + '.json';
     fs.exists(filePath)
       .then((value) => {
@@ -446,20 +447,24 @@ export function saveCaseFile (filePath, rawCode) {
                 item.isNeedTest = false;
                 item.isTranscribe = true;
                 item.children = [];
-                item.caseDispose = JSON.parse(rawCode);
+                item.caseDispose = rawCode.code;
+                item.config = rawCode.config;
                 return true;
               }
             });
             if (modChild.length > 0) {
             } else {
-              clsChild[0].children.push({
-                testName: saveCaseAction['4'],
-                name: saveCaseAction['5'],
-                isNeedTest: false,
-                isTranscribe: true,
-                children: [],
-                caseDispose: JSON.parse(rawCode)
-              });
+              clsChild[0].children.push(
+                {
+                  testName: saveCaseAction['4'],
+                  name: saveCaseAction['5'],
+                  isNeedTest: false,
+                  isTranscribe: true,
+                  children: [],
+                  caseDispose: rawCode.code,
+                  config: rawCode.config
+                }
+              );
             }
           }
         } else {
@@ -478,7 +483,8 @@ export function saveCaseFile (filePath, rawCode) {
                 isNeedTest: false,
                 isTranscribe: true,
                 children: [],
-                caseDispose: JSON.parse(rawCode)
+                caseDispose: rawCode.code,
+                config: rawCode.config
               }
             ]
           });

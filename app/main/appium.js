@@ -158,7 +158,9 @@ export function createNewSessionWindow (win) {
 
   // When the main window is closed, close the session window too
   win.once('closed', () => {
-    sessionWin.close();
+    if (!sessionWin) {
+      sessionWin.close();
+    }
   });
 }
 
