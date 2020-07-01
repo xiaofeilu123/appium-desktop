@@ -36,15 +36,19 @@ class RecordedActions extends Component {
       recordedActions,
       sessionDetails,
       hideSaveCaseModal,
+      saveCaseAction,
       saveCaseFile
     } = this.props;
+    if (!saveCaseAction['0'] || !saveCaseAction['1'] || !saveCaseAction['2'] ||
+      !saveCaseAction['3'] || !saveCaseAction['4'] || !saveCaseAction['5']) {
+      return;
+    }
     let {host, port, path, https, desiredCapabilities} = sessionDetails;
     let framework = new frameworks[actionFramework](host, port, path,
       https, desiredCapabilities);
     framework.actions = recordedActions;
     let rawCode = framework.getSaveArr();
     let fileDir = FPath.resolve(__dirname, 'case');
-    // let fileName = saveCaseAction['0'] + '.json';
     hideSaveCaseModal();
     saveCaseFile(fileDir, rawCode);
   }
@@ -68,12 +72,12 @@ class RecordedActions extends Component {
     } = this.props;
 
     const saveCaseValue = [
-      ['projectName', 'string'],
-      ['peojectDes', 'string'],
-      ['className', 'string'],
-      ['classDes', 'string'],
-      ['methodName', 'string'],
-      ['methodDes', 'string']
+      ['projectName', 'string', true],
+      ['peojectDes', 'string', false],
+      ['className', 'string', true],
+      ['classDes', 'string', false],
+      ['methodName', 'string', true],
+      ['methodDes', 'string', false]
     ];
 
     // let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
@@ -139,9 +143,15 @@ class RecordedActions extends Component {
           cancelText={t('Quit')}
         >
           {_.map(saveCaseValue,
-            ([argName, argType], index) => <Row key={index} gutter={16}>
+            ([argName, argType, isNoC], index) => <Row key={index} gutter={16}>
               <Col span={24} className={InspectorStyles['arg-container']}>
-                {argType === 'string' && <Input onChange={(e) => saveCaseActionArg(index, e.target.value)} addonBefore={t(argName)}/>}
+                {argType === 'string' && isNoC && <Input
+                  onChange={(e) => saveCaseActionArg(index, e.target.value)}
+                  addonBefore={t(argName)}
+                  onKeyUp={(e) => {e.target.value = e.target.value.replace(/[^\w_]/g, '');}}/>}
+                {argType === 'string' && !isNoC && <Input
+                  onChange={(e) => saveCaseActionArg(index, e.target.value)}
+                  addonBefore={t(argName)}/>}
               </Col>
             </Row>)}
         </Modal>
